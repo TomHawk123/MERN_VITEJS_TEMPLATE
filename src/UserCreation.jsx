@@ -6,7 +6,7 @@ export default function UserCreation() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [handleSubmitResponseMsg, setHandleSubmitResponseMsg] = useState("");
-
+  const apiUrl = import.meta.env.VITE_API_URL;
   // create a function that will handle the submission of the form
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -16,7 +16,7 @@ export default function UserCreation() {
       password,
     };
     // send a POST request to the backend with the dataToSend
-    fetch("http://localhost:8000/create/user", {
+    fetch(`${apiUrl}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
