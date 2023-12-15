@@ -39,13 +39,13 @@ export default function UserCreation() {
         <input
           type="text"
           placeholder="username"
-          value={username}
+          value={username.value}
           onChange={(e) => (username.value = e.target.value)}
         />
         <input
           type="password"
           placeholder="password"
-          value={password}
+          value={password.value}
           onChange={(e) => (password.value = e.target.value)}
         />
         <button type="submit">Create User</button>
