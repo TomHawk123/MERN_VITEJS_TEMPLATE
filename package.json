@@ -1,0 +1,10 @@
+{
+  "name": "mern_vitejs_template",
+  "version": "0.0.1",
+  "description": "Template for a MERN stack web client with Vite.",
+  "main": "index.js",
+  "repository": "git@github-secondary.com:TomHawk123/MERN_VITEJS_TEMPLATE.git",
+  "author": "MacPromo <matthew@promoapplications.com>",
+  "license": "MIT",
+  "private": false
+}
