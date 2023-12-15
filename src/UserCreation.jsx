@@ -1,56 +1,48 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function UserCreation() {
   // set the initial state of the username and password
   // to empty strings
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [handleSubmitResponseMsg, setHandleSubmitResponseMsg] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const apiUrl = import.meta.env.VITE_API_URL;
+  const navigate = useNavigate();
+
   // create a function that will handle the submission of the form
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // create a variable that will hold the data to be sent to the backend
+    setErrorMessage("");
     let dataToSend = {
       username,
       password,
     };
-    // send a POST request to the backend with the dataToSend
-    fetch(`${apiUrl}/create/user`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(dataToSend),
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        console.log("res", res);
-        if (res.msg) {
-          setHandleSubmitResponseMsg(res.msg);
-        }
+
+    try {
+      // send a POST request to the backend with the dataToSend
+      const response = await fetch(`${apiUrl}/create/user`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(dataToSend),
       });
+
+      const result = await response?.json();
+
+      console.log("res", result);
+      if (result.msg) {
+        return setErrorMessage(result?.msg);
+      } else if (result?.success === true) {
+        return navigate("/home");
+      }
+    } catch (error) {
+      console.log(error);
+      setErrorMessage("Something went wrong with User Creation");
+    }
   };
-  // //  create a function that will handle the submission of the form
-  //   const handleLogin = (e) => {
-  //     e.preventDefault();
-  //     // create a variable that will hold the data to be sent to the backend
-  //     let dataToSend = { username: username, password: password };
-  //     // send a POST request to the backend with the dataToSend
-  //     fetch("http://localhost:8000/api/token/", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify(dataToSend),
-  //     })
-  //       .then((response) => response.json())
-  //       .then((response) => {
-  //         setToken("mytoken", response.access);
-  //       })
-  //       .catch((error) => console.log(error));
-  //   };
-  // return the JSX that will be rendered
+
   return (
     <>
       <h1>Create a User</h1>
@@ -68,10 +60,8 @@ export default function UserCreation() {
           onChange={(e) => setPassword(e.target.value)}
         />
         <button type="submit">Create User</button>
-        <p>{handleSubmitResponseMsg}</p>
+        <p>{errorMessage}</p>
       </form>
-      {/* <button onClick={handleLogin}>Login</button> */}
-      {/* <p>{errorMessage}</p> */}
     </>
   );
 }
