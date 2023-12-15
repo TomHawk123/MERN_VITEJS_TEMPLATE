@@ -16,7 +16,7 @@ export default function UserCreation() {
       password,
     };
     // send a POST request to the backend with the dataToSend
-    fetch(`${apiUrl}`, {
+    fetch(`${apiUrl}/create/user`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
